@@ -1,3 +1,5 @@
+'use client'
+
 import PageTitle from '@/app/web/components/common/pageTitle'
 import ReserveItem, {
   ReserveItemProps,
@@ -5,6 +7,7 @@ import ReserveItem, {
 
 const initReserveItemState: Array<ReserveItemProps> = [
   {
+    id: 1,
     title: '역세권 숲속 공간',
     address: '서울시 강남구 도산대로',
     startDate: '2024.10.27',
@@ -13,6 +16,7 @@ const initReserveItemState: Array<ReserveItemProps> = [
     step: 1,
   },
   {
+    id: 2,
     title: '역세권 숲속 공간',
     address: '서울시 강남구 도산대로',
     startDate: '2024.10.27',
@@ -21,6 +25,7 @@ const initReserveItemState: Array<ReserveItemProps> = [
     step: 2,
   },
   {
+    id: 3,
     title: '역세권 숲속 공간',
     address: '서울시 강남구 도산대로',
     startDate: '2024.10.27',
@@ -29,6 +34,7 @@ const initReserveItemState: Array<ReserveItemProps> = [
     step: 3,
   },
   {
+    id: 4,
     title: '역세권 숲속 공간',
     address: '서울시 강남구 도산대로',
     startDate: '2024.10.27',

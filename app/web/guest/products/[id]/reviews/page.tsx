@@ -1,6 +1,6 @@
-import ReviewItem from '@/app/my/reviews/components/ReviewItem'
 import { BackAppbar } from '@/app/web/components/common/appbar'
 import PageTitle from '@/app/web/components/common/pageTitle'
+import ReviewItem from '../../../my/reviews/components/ReviewItem'
 
 const iniReviews = [{}, {}]
 
