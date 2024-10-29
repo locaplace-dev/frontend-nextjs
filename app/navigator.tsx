@@ -1,15 +1,12 @@
 'use client'
-import {
-  AppRouterInstance,
-  NavigateOptions,
-} from 'next/dist/shared/lib/app-router-context.shared-runtime'
+import { NavigateOptions } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 // import { useNavigate, Link } from 'react-router-dom';
 import Link, { LinkProps } from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
 const isWebview = () => {
   if (typeof window === 'undefined') return false // 서버사이드에서는 판단할 수 없음
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera
+  const userAgent = navigator.userAgent || navigator.vendor
 
   // Android WebView 체크
   const isAndroidWebView = /wv/.test(userAgent) && /Android/.test(userAgent)
@@ -27,10 +24,12 @@ export function useCustomNavigate() {
     return {
       back() {},
       push(href: string, options?: NavigateOptions) {
-        window.bridge.postMessage('router:push', {
-          viewType: 'default',
-          url: href,
-        })
+        if (window.bridge != null) {
+          window.bridge.postMessage('router:push', {
+            viewType: 'default',
+            url: href,
+          })
+        }
       },
       forward() {},
       refresh() {},

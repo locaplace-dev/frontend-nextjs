@@ -20,8 +20,9 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/navigator.tsx"],
+  "include": ["next-env.d.ts","window.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/navigator.tsx"],
   "exclude": ["node_modules"]
 }

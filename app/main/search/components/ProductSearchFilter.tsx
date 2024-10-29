@@ -4,9 +4,9 @@ import Image from 'next/image'
 import { ButtonHTMLAttributes, useState } from 'react'
 import '@/app/ui/styles/ProductSearchFilter.css'
 
-interface ProductSearchFilterProps {
-  showFilter: boolean
-}
+// interface ProductSearchFilterProps {
+//   showFilter: boolean
+// }
 
 const initFilterItems: Array<FilterItemProps> = [
   {

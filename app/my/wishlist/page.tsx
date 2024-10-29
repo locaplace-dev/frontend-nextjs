@@ -17,6 +17,7 @@ export default function MyWishList() {
           isPetAvailable={true}
           elevatorCount={2}
           price={20000}
+          id={1}
         />
         <ProductItem
           isLiked={false}
@@ -29,6 +30,7 @@ export default function MyWishList() {
           isPetAvailable={true}
           elevatorCount={2}
           price={20000}
+          id={2}
         />
       </div>
     </div>

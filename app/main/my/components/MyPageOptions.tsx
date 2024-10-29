@@ -1,6 +1,4 @@
 'use client'
-
-import { useCustomNavigate } from '@/app/navigator'
 import OptionItem, { OptionItemProps } from '@/app/ui/common/TextOptionItem'
 
 const options: Array<OptionItemProps> = [

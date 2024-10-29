@@ -12,7 +12,7 @@ export default function ChatWriter({
   myId: number
 }) {
   const [input, setInput] = useState('')
-  const [file, setFile] = useState(null)
+
   const fileRef = useRef<HTMLInputElement>(null)
   // input click method
   const handleClick = () => {
@@ -26,14 +26,13 @@ export default function ChatWriter({
     }
   }
 
-  const handleFileChange = async (file) => {
+  const handleFileChange = async (file: File) => {
     await uploadFileAndSendMessage({
       roomId,
       senderId: myId,
       file: file,
       text: '',
     })
-    setFile(null)
   }
 
   return (
@@ -57,8 +56,15 @@ export default function ChatWriter({
           type="file"
           ref={fileRef}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            console.log(event.target.files[0].name)
-            handleFileChange(event.target.files[0])
+            if (
+              event !== null &&
+              event.target !== null &&
+              event.target.files != null &&
+              event.target.files.length > 0
+            ) {
+              handleFileChange(event?.target?.files[0])
+            }
+
             // setFile(e.target.files[0])
             // handleSend()
           }}

@@ -2,7 +2,7 @@ import { ChatsItemProps } from './ChatRoom'
 
 export default function OpChats({
   text,
-  fileURL,
+  // fileURL,
   isContinued,
   timestamp,
 }: ChatsItemProps) {

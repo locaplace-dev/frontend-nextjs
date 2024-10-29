@@ -8,8 +8,8 @@ import {
   orderBy,
   onSnapshot,
   Timestamp,
+  DocumentData,
 } from 'firebase/firestore'
-import { sendMessage, uploadFileAndSendMessage } from '@/app/apis/firebase'
 import OpChats from './OpChats'
 import MyChats from './MyChats'
 
@@ -21,7 +21,7 @@ export interface ChatsItemProps {
 }
 
 function ChatRoom({ roomId, myId }: { roomId: number; myId: number }) {
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState<DocumentData[]>([])
 
   useEffect(() => {
     const q = query(

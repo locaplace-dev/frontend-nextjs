@@ -20,8 +20,8 @@ export default function ChatItem({
   startDate,
   endDate,
   chatStatus,
-  productImg,
-  profileImg,
+  // productImg,
+  // profileImg,
   id,
 }: ChatItemProps) {
   const useNavigator = useCustomNavigate()
