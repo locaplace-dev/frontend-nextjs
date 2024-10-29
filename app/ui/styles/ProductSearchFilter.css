@@ -1,0 +1,18 @@
+.filter-options {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0s ease;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.filter-options.open {
+  padding: 1.25rem 0.75rem;
+  max-height: 300px; /* 펼쳐질 높이 설정 */
+  transition: max-height 0.2s ease;
+}
