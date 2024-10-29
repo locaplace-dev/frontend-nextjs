@@ -6,6 +6,7 @@ export default function ProductReserve() {
     <div>
       <BackAppbar />
       <PageTitle title="예약하기" />
+      test
     </div>
   )
 }
