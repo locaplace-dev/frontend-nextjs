@@ -27,7 +27,7 @@ export const BackAppbar = ({ isWhite }: BackAppbarProps) => {
       onClick={() => {
         navigator.back()
       }}
-      className=" h-16 justify-start items-center gap-5 inline-flex"
+      className=" h-16 justify-start items-center gap-5 inline-flex cursor-pointer"
     >
       <Image
         src={`/images/${isWhite ? 'ic_back_white' : 'ic_back'}.svg`}
@@ -46,7 +46,7 @@ export const CloseAppbar = () => {
       onClick={() => {
         navigator.back()
       }}
-      className="h-16 w-full justify-end  inline-flex"
+      className="h-16 w-full justify-end  inline-flex cursor-pointer"
     >
       <Image
         width={40}
@@ -63,7 +63,7 @@ export const MainAppbar = () => {
   const pathname = usePathname()
   return (
     <div className="w-full h-16  py-3.5 flex-row justify-between items-center inline-flex">
-      {pathname == '/main/search' ? (
+      {pathname == '/web/guest/main/search' ? (
         <div className="w-28 h-9 relative">
           <Image
             src={'/images/img_loca.svg'}
@@ -78,9 +78,9 @@ export const MainAppbar = () => {
         </div>
       ) : (
         <div className="w-16 h-10 text-2xl leading-10">
-          {pathname == '/main/reservations'
+          {pathname == '/web/guest/main/reservations'
             ? '예약'
-            : pathname == '/main/chats'
+            : pathname == '/web/guest/main/chats'
             ? '채팅'
             : '마이'}
         </div>

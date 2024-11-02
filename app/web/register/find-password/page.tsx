@@ -5,6 +5,7 @@ import { InputEmail } from './components/input-email'
 import { useState } from 'react'
 import CheckEmail from './components/check-email'
 import { useCustomNavigate } from '@/app/navigator'
+import { sendPasswordChangeEmail } from '@/app/apis/guest/user'
 
 export default function ResetPassword() {
   const navigator = useCustomNavigate()
@@ -15,7 +16,7 @@ export default function ResetPassword() {
       <BackAppbar />
       {step == 0 ? (
         <InputEmail
-          onConfirm={() => {
+          onConfirm={async () => {
             setStep(1)
           }}
           onCancel={() => {

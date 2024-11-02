@@ -17,6 +17,21 @@ export default function RootLayout({
       <body className={` antialiased font-['Spoqa Han Sans Neo'] `}>
         <div className="w-full py-3.5">{children}</div>
       </body>
+      {/* <script defer async>
+        {`
+            function getMessage (bridgeName, value) {
+  switch (bridgeName) {
+    case 'login':
+      console.log("asdf")
+      // 딥링크로 앱에 진입했을 때 수행 코드를 작성합니다.
+    case 'notification':
+      // push notification 클릭시 수행 코드를 작성합니다.
+    case 'colorScheme':
+      // 다크모드 변경시 수행 코드를 작성합니다.
+  }
+}
+          `}
+      </script> */}
     </html>
   )
 }

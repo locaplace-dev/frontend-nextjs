@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import SubTitle from './SubTitle'
+import { ProductsDetails } from '@/app/apis/guest/type'
 
 const InitBasicOptionsState: Array<OptionItemProps> = [
   {
@@ -40,7 +41,11 @@ const InitBasicOptionsState: Array<OptionItemProps> = [
   },
 ]
 
-export default function ProductOptions() {
+export default function ProductOptions({
+  details,
+}: {
+  details: ProductsDetails | undefined
+}) {
   return (
     <div className="flex-col justify-start items-start inline-flex w-full">
       <SubTitle subtitle="기본 정보" />

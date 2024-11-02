@@ -5,6 +5,7 @@ import PageTitle from '@/app/web/components/common/pageTitle'
 import TextField from '@/app/web/components/common/TextField'
 import { validateEmail } from '@/app/utils/validator'
 import { useState } from 'react'
+import { sendPasswordChangeEmail } from '@/app/apis/guest/user'
 
 interface InputEmailProps {
   onConfirm: Function
@@ -35,7 +36,8 @@ export const InputEmail = ({ onConfirm, onCancel }: InputEmailProps) => {
       />
       <div className=" w-full flex-col justify-start items-start gap-2.5 inline-flex">
         <Button
-          onClick={() => {
+          onClick={async () => {
+            sendPasswordChangeEmail({ email: email })
             onConfirm()
           }}
           buttonType={BUTTON_TYPE.primary}

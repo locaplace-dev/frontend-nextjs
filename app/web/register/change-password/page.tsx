@@ -7,6 +7,8 @@ import PageTitle from '@/app/web/components/common/pageTitle'
 import TextField from '@/app/web/components/common/TextField'
 import { validatePassword } from '@/app/utils/validator'
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { changePassword } from '@/app/apis/guest/user'
 
 export default function ChangePassword() {
   const [password, setPassword] = useState('')
@@ -16,11 +18,15 @@ export default function ChangePassword() {
   const [passwordErrorConfirm, setPasswordErrorConfirm] = useState('')
 
   const navigator = useCustomNavigate()
+  const param = useSearchParams()
+  console.log()
 
   const handlePasswordChange = (value: string) => {
     setPassword(value)
     if (value && !validatePassword(value)) {
-      setPasswordError('올바르지 않은 비밀번호 형식입니다')
+      setPasswordError(
+        '비밀번호는 8자리 이상, 숫자와 특수문자를 포함해야 합니다.'
+      )
     } else {
       setPasswordError('')
     }
@@ -28,11 +34,19 @@ export default function ChangePassword() {
   const handlePasswordConfirmChange = (value: string) => {
     setPasswordConfirm(value)
     if (value && !validatePassword(value)) {
-      setPasswordErrorConfirm('올바르지 않은 비밀번호 형식입니다')
+      setPasswordErrorConfirm('비밀번호가 일치하지 않습니다.')
     } else {
       setPasswordErrorConfirm('')
     }
   }
+
+  const changePasswordUI = async () => {
+    await changePassword({
+      token: param.get('token') ?? '',
+      password: password,
+    })
+  }
+
   return (
     <div>
       <BackAppbar />
@@ -56,8 +70,9 @@ export default function ChangePassword() {
       <Button
         buttonType={BUTTON_TYPE.primary}
         label="확인"
-        onClick={() => {
-          navigator.replace('/register/login')
+        onClick={async () => {
+          await changePasswordUI()
+          navigator.replace('/web/register/login')
         }}
       />
     </div>

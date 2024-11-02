@@ -18,11 +18,14 @@ const TextField: React.FC<{
         </label>
         <div className="flex-col justify-start items-start gap-2 flex w-full">
           <input
-            type="text"
+            type={type}
             value={value}
             onChange={handleChange}
             placeholder={`${label} 입력`}
-            className="w-full text-stone-300 text-base "
+            // text-stone-300
+            className="w-full 
+            
+            text-base "
             style={{
               borderBottom: '1px solid #000',
               outline: 'none',

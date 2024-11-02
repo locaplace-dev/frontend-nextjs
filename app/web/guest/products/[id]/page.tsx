@@ -15,10 +15,26 @@ import ProductRefundRules from './components/ProductRefundRules'
 import { Button, BUTTON_TYPE } from '@/app/web/components/common/Button'
 import { CustomLink, useCustomNavigate } from '@/app/navigator'
 import { useParams, usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { Products } from '@/app/apis/guest/type'
+import { getproductsDetails } from '@/app/apis/guest/products'
 
 export default function ProductDetailPage() {
   const route = useParams()
   const navigator = useCustomNavigate()
+
+  const [product, setProduct] = useState<Products | null>(null)
+
+  useEffect(() => {
+    getProductInfo()
+  }, [])
+
+  const getProductInfo = async () => {
+    const body = await getproductsDetails(Number(route.id))
+    setProduct(body)
+    console.log(body)
+  }
+
   return (
     <div>
       <div className="relative">
@@ -29,10 +45,12 @@ export default function ProductDetailPage() {
       </div>
       <div className="px-4">
         <ProductSummary />
-        <ProductOptions />
-        <ProductComment />
-        <ProductUsage />
-        <ProductHostInfo />
+        <ProductOptions details={product?.productsDetails} />
+        <ProductComment
+          comment={product?.productsDetails?.introductionSpace ?? ''}
+        />
+        <ProductUsage usage={product?.productsDetails?.introductionUse ?? ''} />
+        <ProductHostInfo host={product?.host} />
         <ProductLocation />
         <ProductAddons />
         <ProductReviews />

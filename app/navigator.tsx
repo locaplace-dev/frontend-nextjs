@@ -4,7 +4,7 @@ import { NavigateOptions } from 'next/dist/shared/lib/app-router-context.shared-
 import Link, { LinkProps } from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
-const isWebview = () => {
+export const isWebview = () => {
   if (typeof window === 'undefined') return false // 서버사이드에서는 판단할 수 없음
   const userAgent = navigator.userAgent || navigator.vendor
 
@@ -22,13 +22,23 @@ const isWebview = () => {
 export function useCustomNavigate() {
   if (isWebview()) {
     return {
-      back() {},
+      back() {
+        window.bridge.postMessage(
+          JSON.stringify({
+            key: 'router:pop',
+            viewType: 'default',
+          })
+        )
+      },
       push(href: string, options?: NavigateOptions) {
         if (window.bridge != null) {
-          window.bridge.postMessage('router:push', {
-            viewType: 'default',
-            url: href,
-          })
+          window.bridge.postMessage(
+            JSON.stringify({
+              key: 'router:push',
+              viewType: 'default',
+              url: href,
+            })
+          )
         }
       },
       forward() {},
@@ -60,10 +70,13 @@ export const CustomLink = ({
         onClick={(event) => {
           console.log('fuck')
           event.preventDefault()
-          window.bridge.postMessage('router:push', {
-            viewType: 'default',
-            url: href,
-          })
+          window.bridge.postMessage(
+            JSON.stringify({
+              key: 'router:push',
+              viewType: 'default',
+              url: href,
+            })
+          )
         }}
       >
         {children}

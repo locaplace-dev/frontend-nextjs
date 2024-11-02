@@ -1,6 +1,7 @@
+import { Host } from '@/app/apis/guest/type'
 import SubTitle from './SubTitle'
 
-export default function ProductHostInfo() {
+export default function ProductHostInfo({ host }: { host: Host | undefined }) {
   return (
     <div className="flex-col justify-start items-start inline-flex w-full">
       <SubTitle subtitle="호스트" />
@@ -23,7 +24,7 @@ export default function ProductHostInfo() {
               <div className="justify-start items-center gap-2 flex">
                 <div className="justify-start items-center gap-1.5 flex">
                   <div className="text-black text-sm font-medium font-['Spoqa Han Sans Neo']">
-                    홍길동
+                    {host?.email}
                   </div>
                 </div>
               </div>

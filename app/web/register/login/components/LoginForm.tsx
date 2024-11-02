@@ -2,49 +2,84 @@
 import TextField from '@/app/web/components/common/TextField'
 import { validateEmail, validatePassword } from '@/app/utils/validator'
 import { useState } from 'react'
+import { LOGIN_ACTION_KIND, useLoginContext } from '../provider'
 
 export function LoginForm() {
-  const [email, setEmail] = useState('')
-  const [emailError, setEmailError] = useState('')
-  const [password, setPassword] = useState('')
+  const { state, dispatch } = useLoginContext()
 
-  const [passwordError, setPasswordError] = useState('')
   // 이메일 유효성 검사
   const handleEmailChange = (value: string) => {
-    setEmail(value)
+    dispatch({
+      type: LOGIN_ACTION_KIND.INPUT,
+      payload: {
+        value: value,
+        name: 'email',
+      },
+    })
+
     if (value && !validateEmail(value)) {
-      setEmailError('올바르지 않은 이메일 형식입니다')
+      dispatch({
+        type: LOGIN_ACTION_KIND.ERROR,
+        payload: {
+          value: '올바르지 않은 이메일 형식입니다',
+          name: 'emailError',
+        },
+      })
     } else {
-      setEmailError('')
+      dispatch({
+        type: LOGIN_ACTION_KIND.ERROR,
+        payload: {
+          value: '',
+          name: 'emailError',
+        },
+      })
     }
   }
 
   // 비밀번호 유효성 검사
   const handlePasswordChange = (value: string) => {
-    setPassword(value)
+    dispatch({
+      type: LOGIN_ACTION_KIND.INPUT,
+      payload: {
+        value: value,
+        name: 'password',
+      },
+    })
+
     if (value && !validatePassword(value)) {
-      setPasswordError(
-        '비밀번호는 8자리 이상, 숫자와 특수문자를 포함해야 합니다'
-      )
+      dispatch({
+        type: LOGIN_ACTION_KIND.ERROR,
+        payload: {
+          value: '비밀번호는 8자리 이상, 숫자와 특수문자를 포함해야 합니다',
+          name: 'passwordError',
+        },
+      })
     } else {
-      setPasswordError('')
+      dispatch({
+        type: LOGIN_ACTION_KIND.ERROR,
+        payload: {
+          value: '',
+          name: 'passwordError',
+        },
+      })
     }
   }
+
   return (
     <div>
       <TextField
         type="email"
         label="이메일"
-        value={email}
+        value={state.email}
         onChange={handleEmailChange}
-        error={emailError}
+        error={state.emailError}
       />
       <TextField
         type="password"
         label="비밀번호"
-        value={password}
+        value={state.password}
         onChange={handlePasswordChange}
-        error={passwordError}
+        error={state.passwordError}
       />
     </div>
   )

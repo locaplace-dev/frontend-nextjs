@@ -14,7 +14,7 @@ export function BtmBar() {
       <TabItem
         image="search"
         label="검색"
-        active={pathname == '/guest/main/search'}
+        active={pathname == '/web/guest/main/search'}
         onClick={() => {
           useNavigation.push('/web/guest/main/search')
         }}
@@ -22,7 +22,7 @@ export function BtmBar() {
       <TabItem
         image="reservation"
         label="예약"
-        active={pathname == '/guest/main/reservations'}
+        active={pathname == '/web/guest/main/reservations'}
         onClick={() => {
           useNavigation.push('/web/guest/main/reservations')
         }}
@@ -30,7 +30,7 @@ export function BtmBar() {
       <TabItem
         image="chat"
         label="채팅"
-        active={pathname == '/guest/main/chats'}
+        active={pathname == '/web/guest/main/chats'}
         onClick={() => {
           useNavigation.push('/web/guest/main/chats')
         }}
@@ -38,7 +38,7 @@ export function BtmBar() {
       <TabItem
         image="my"
         label="마이"
-        active={pathname == '/guest/main/my'}
+        active={pathname == '/web/guest/main/my'}
         onClick={() => {
           useNavigation.push('/web/guest/main/my')
         }}
