@@ -2,7 +2,7 @@
 
 import { Button, BUTTON_TYPE } from '@/app/web/components/common/Button'
 import UsageAgreeButton from './components/UsageAgreeBtn'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import { useCustomNavigate } from '@/app/navigator'
 import { BackAppbar } from '@/app/web/components/common/appbar'
@@ -12,6 +12,8 @@ import {
   UsageAgreeProvider,
   useUsageAgreeContext,
 } from './provider'
+import { a } from 'framer-motion/client'
+import { sendGetNice } from '@/app/apis/guest/user'
 
 type UsageType = {
   usage: boolean
@@ -31,10 +33,25 @@ export default function Wrapper() {
 
 function UsageAgree() {
   const { state, dispatch } = useUsageAgreeContext()
+  const [niceData, setNiceData] = useState<HidedNiceInputsProps | null>(null)
   const navigator = useCustomNavigate()
   const param = useSearchParams()
   const base64User = param.get('user')
   const user = atob(base64User ?? '')
+  const formRef = useRef<HTMLFormElement>(null)
+  function fnPopup() {
+    window.open(
+      'https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb',
+      'popupChk',
+      'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no'
+    )
+    if (formRef != null) {
+      formRef.current.action =
+        'https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb'
+      formRef.current.target = 'popupChk'
+      formRef.current.submit()
+    }
+  }
 
   console.log(user)
 
@@ -117,12 +134,48 @@ function UsageAgree() {
               ? BUTTON_TYPE.primary
               : BUTTON_TYPE.inactive
           }
-          onClick={() => {
+          onClick={async () => {
             if (state.usage && state.adult && state.privacy && state.location) {
+              const body = (await sendGetNice()) as HidedNiceInputsProps
+              setNiceData(body)
+              fnPopup()
             }
           }}
         />
       </div>
+      {niceData && <HidedNiceInputs {...niceData} formRef={formRef} />}
     </div>
+  )
+}
+
+interface HidedNiceInputsProps {
+  token_version_id: string
+  enc_data: string
+  integrity_value: string
+  formRef: React.Ref<HTMLFormElement>
+}
+const HidedNiceInputs = ({
+  token_version_id,
+  enc_data,
+  integrity_value,
+  formRef,
+}: HidedNiceInputsProps) => {
+  return (
+    <form ref={formRef} name="form_chk" id="form_chk" method="post">
+      <input type="hidden" id="m" name="m" value="service" />
+      <input
+        type="hidden"
+        id="token_version_id"
+        name="token_version_id"
+        value={token_version_id}
+      />
+      <input type="hidden" id="enc_data" name="enc_data" value={enc_data} />
+      <input
+        type="hidden"
+        id="integrity_value"
+        name="integrity_value"
+        value={integrity_value}
+      />
+    </form>
   )
 }

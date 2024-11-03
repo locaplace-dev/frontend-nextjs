@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { basicPost, setToken } from '../base'
-import { BASE_URL } from '../host'
+import { BASE_URL, SERVER_URL } from '../host'
 
 interface LoginProps {
   username: string
@@ -47,4 +47,9 @@ interface SendPasswordChangeEmail {
 
 export const sendPasswordChangeEmail = async (req: SendPasswordChangeEmail) => {
   const body = await axios.post(BASE_URL + 'send-mail/password', req)
+}
+
+export const sendGetNice = async () => {
+  const body = await axios.get(SERVER_URL + 'nice/form')
+  return body.data
 }
