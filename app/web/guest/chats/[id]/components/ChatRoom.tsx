@@ -35,7 +35,7 @@ function ChatRoom({ roomId, myId }: { roomId: number; myId: number }) {
   }, [roomId])
 
   return (
-    <div className="w-full py-3">
+    <div className="w-full py-3 flex-1 overflow-y-auto">
       <div className="w-full flex flex-col">
         {messages.map((msg, index) => {
           console.log(msg)

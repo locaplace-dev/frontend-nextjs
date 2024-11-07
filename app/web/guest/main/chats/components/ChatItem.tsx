@@ -2,6 +2,7 @@
 
 import { useCustomNavigate } from '@/app/navigator'
 import ChatStatus from './ChatStatus'
+import { IChatListItem } from '@/app/apis/guest/Ichat'
 
 export interface ChatItemProps {
   id: number
@@ -15,20 +16,22 @@ export interface ChatItemProps {
 }
 
 export default function ChatItem({
-  name,
-  lastChat,
+  hostName,
+  hostProfileImage,
+  lastContent,
   startDate,
   endDate,
-  chatStatus,
+  chatStatusIdx,
   // productImg,
   // profileImg,
-  id,
-}: ChatItemProps) {
+  chatId,
+  isNewContentExist,
+}: IChatListItem) {
   const useNavigator = useCustomNavigate()
   return (
     <div
       onClick={() => {
-        useNavigator.push(`/web/guest/chats/${id}`)
+        useNavigator.push(`/web/guest/chats/${chatId}`)
       }}
       className="cursor-pointer h-24 px-4 py-4 bg-white rounded-xl flex-col justify-center items-start gap-1.5 inline-flex shadow"
     >
@@ -39,14 +42,18 @@ export default function ChatItem({
         <div className="grow shrink basis-0 flex-col justify-start items-start gap-1.5 inline-flex">
           <div className="self-stretch justify-between items-center inline-flex">
             <div className="flex">
-              <div className="text-sm font-medium leading-tight">{name}</div>
-              <div className="ml-1 w-1 h-1 bg-teal-400 rounded-full" />
+              <div className="text-sm font-medium leading-tight">
+                {hostName}
+              </div>
+              {isNewContentExist && (
+                <div className="ml-1 w-1 h-1 bg-teal-400 rounded-full" />
+              )}
             </div>
-            <ChatStatus status={chatStatus} />
+            <ChatStatus status={chatStatusIdx} />
           </div>
           <div className="self-stretch h-9 flex-col justify-start items-start flex">
             <div className="self-stretch h-4 text-xs leading-none">
-              {lastChat}
+              {lastContent}
             </div>
             <div className="self-stretch h-4 text-neutral-400 text-xs font-['Montserrat'] leading-none">
               {startDate} - {endDate}

@@ -9,7 +9,7 @@ export default function MyReviews() {
       <PageTitle title="나의 리뷰 내역" />
       <div className="flex inline-flex gap-3 flex-col">
         {initReviews.map((item, idx) => (
-          <ReviewItem {...item} />
+          <ReviewItem key={`review-${idx}`} {...item} />
         ))}
       </div>
     </div>

@@ -6,7 +6,7 @@ interface ReservationTabProps {
 }
 
 export default function ReservationTab({ fetchReserves }: ReservationTabProps) {
-  console.log(fetchReserves)
+  // console.log(fetchReserves())
   return (
     <div className=" h-12 py-3 justify-start items-center gap-3.5 inline-flex">
       <TabItem

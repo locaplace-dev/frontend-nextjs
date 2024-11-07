@@ -19,7 +19,6 @@ export default function ChangePassword() {
 
   const navigator = useCustomNavigate()
   const param = useSearchParams()
-  console.log()
 
   const handlePasswordChange = (value: string) => {
     setPassword(value)

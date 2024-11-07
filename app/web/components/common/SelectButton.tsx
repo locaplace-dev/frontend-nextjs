@@ -5,14 +5,21 @@ import { useState } from 'react'
 
 interface SelectButtonProps {
   label: string
+  list: Array<string>
+  value: string | null
+  hintText: string
+  onChange: Function
 }
 
-export default function SelectButton({ label }: SelectButtonProps) {
+export default function SelectButton({
+  label,
+  list,
+  hintText,
+  value,
+  onChange,
+}: SelectButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedCompany, setSelectedCompany] = useState('카드사 선택')
-
-  const cardCompanies = ['카드사 A', '카드사 B', '카드사 C', '카드사 D']
-
+  const [selectedCompany, setSelectedCompany] = useState('')
   const toggleDropdown = () => {
     setIsOpen(!isOpen)
   }
@@ -34,7 +41,12 @@ export default function SelectButton({ label }: SelectButtonProps) {
               onClick={toggleDropdown}
               className="py-2 w-full text-stone-300 text-base cursor-pointer flex justify-between  border-b border-black"
             >
-              <span>{selectedCompany}</span>
+              {value ? (
+                <span className="text-black">{selectedCompany}</span>
+              ) : (
+                <span>{hintText}</span>
+              )}
+
               <Image
                 src={'/images/arrow_drop_down.svg'}
                 alt="dropdown"
@@ -55,18 +67,21 @@ export default function SelectButton({ label }: SelectButtonProps) {
                   zIndex: 1000,
                 }}
               >
-                {cardCompanies.map((company) => (
+                {list.map((item) => (
                   <div
-                    key={company}
-                    onClick={() => selectCompany(company)}
+                    key={item}
+                    className="text-black"
+                    onClick={() => {
+                      selectCompany(item)
+                      onChange(item)
+                    }}
                     style={{
                       padding: '10px',
                       cursor: 'pointer',
-                      backgroundColor:
-                        selectedCompany === company ? '#f0f0f0' : 'white',
+                      backgroundColor: value === item ? '#f0f0f0' : 'white',
                     }}
                   >
-                    {company}
+                    {item}
                   </div>
                 ))}
               </div>

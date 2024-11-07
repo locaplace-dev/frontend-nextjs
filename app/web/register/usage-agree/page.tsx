@@ -2,7 +2,7 @@
 
 import { Button, BUTTON_TYPE } from '@/app/web/components/common/Button'
 import UsageAgreeButton from './components/UsageAgreeBtn'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useCustomNavigate } from '@/app/navigator'
 import { BackAppbar } from '@/app/web/components/common/appbar'
@@ -12,8 +12,7 @@ import {
   UsageAgreeProvider,
   useUsageAgreeContext,
 } from './provider'
-import { a } from 'framer-motion/client'
-import { sendGetNice } from '@/app/apis/guest/user'
+import { registerWithVerification, sendGetNice } from '@/app/apis/guest/user'
 
 type UsageType = {
   usage: boolean
@@ -39,6 +38,8 @@ function UsageAgree() {
   const base64User = param.get('user')
   const user = atob(base64User ?? '')
   const formRef = useRef<HTMLFormElement>(null)
+  const [authResult, setAuthResult] = useState<string | null>(null)
+
   function fnPopup() {
     window.open(
       'https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb',
@@ -62,11 +63,34 @@ function UsageAgree() {
         name,
       },
     })
-    // setUsage({
-    //   ...usage,
-    //   [name]: !usage[name],
-    // })
   }
+
+  useEffect(() => {
+    sendGetNice().then((value: HidedNiceInputsProps) => {
+      setNiceData(value)
+    })
+
+    // 메시지 이벤트 리스너 추가
+    window.addEventListener('message', (event) => {
+      // 보안상 origin을 확인하는 것이 좋습니다.
+      // console.log(event)
+
+      // console.log(authData)
+      if (event.origin === window.location.origin) {
+        const authData = JSON.parse(event.data)
+        console.log(authData)
+        setAuthResult(event.data)
+        registerWithVerification({
+          email: JSON.parse(user).email,
+          password: JSON.parse(user).password,
+          token_version_id: authData.token_version_id,
+          encData: authData.enc_data,
+          integrity_value: authData.integrity_value,
+        })
+        navigator.push('/web/guest/main/search')
+      }
+    })
+  }, [])
 
   return (
     <div>
@@ -136,8 +160,6 @@ function UsageAgree() {
           }
           onClick={async () => {
             if (state.usage && state.adult && state.privacy && state.location) {
-              const body = (await sendGetNice()) as HidedNiceInputsProps
-              setNiceData(body)
               fnPopup()
             }
           }}
@@ -161,21 +183,27 @@ const HidedNiceInputs = ({
   formRef,
 }: HidedNiceInputsProps) => {
   return (
-    <form ref={formRef} name="form_chk" id="form_chk" method="post">
-      <input type="hidden" id="m" name="m" value="service" />
-      <input
-        type="hidden"
-        id="token_version_id"
-        name="token_version_id"
-        value={token_version_id}
-      />
-      <input type="hidden" id="enc_data" name="enc_data" value={enc_data} />
-      <input
-        type="hidden"
-        id="integrity_value"
-        name="integrity_value"
-        value={integrity_value}
-      />
+    <form name="form_chk" method="post" ref={formRef}>
+      <input type="hidden" name="m" value="service" />
+      <input type="hidden" name="token_version_id" value={token_version_id} />
+      <input type="hidden" name="enc_data" value={enc_data} />
+      <input type="hidden" name="integrity_value" value={integrity_value} />
     </form>
+    // <form ref={formRef} name="form_chk" id="form_chk" method="post">
+    //   <input type="hidden" id="m" name="m" value="service" />
+    //   <input
+    //     type="hidden"
+    //     id="token_version_id"
+    //     name="token_version_id"
+    //     value={token_version_id}
+    //   />
+    //   <input type="hidden" id="enc_data" name="enc_data" value={enc_data} />
+    //   <input
+    //     type="hidden"
+    //     id="integrity_value"
+    //     name="integrity_value"
+    //     value={integrity_value}
+    //   />
+    // </form>
   )
 }

@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import ChatItem, { ChatItemProps } from './components/ChatItem'
 import Suggestion from '../reservations/components/SuggestLogin'
+import { getChatList } from '@/app/apis/guest/chat'
+import { ChatListRes, IChatListItem } from '@/app/apis/guest/Ichat'
 
 const initChatItemState = [
   {
@@ -68,10 +70,11 @@ const initChatItemState = [
 ]
 
 export default function Chatpage() {
-  const [chats, setChats] = useState<ChatItemProps[]>(initChatItemState)
+  const [chats, setChats] = useState<IChatListItem[]>([])
 
-  const fetchChats = () => {
-    setChats(initChatItemState)
+  const fetchChats = async () => {
+    const result = (await getChatList()) as ChatListRes
+    setChats(result)
   }
 
   useEffect(() => {

@@ -24,7 +24,7 @@ export default function ProductReviews() {
       <div className="py-5 w-full">
         <Button
           onClick={() => {
-            useNavigator.push(`/products/${params.id}/reviews`)
+            useNavigator.push(`/web/guest/products/${params.id}/reviews`)
           }}
           buttonType={BUTTON_TYPE.secondary}
           label="리뷰 더보기"

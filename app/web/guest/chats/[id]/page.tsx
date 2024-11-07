@@ -5,25 +5,43 @@ import ReserveItem from '@/app/web/components/common/ReserveItem'
 import ChatWriter from './components/ChatWriter'
 import ChatRoom from './components/ChatRoom'
 import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { getChatInfo, IChatInfo } from '@/app/apis/guest/chat'
 
 export default function ChatPage() {
+  const [chat, setChat] = useState<IChatInfo | null>(null)
   const route = useParams()
 
+  const fetchChatInfo = async (chatId: number) => {
+    const result = await getChatInfo(chatId)
+    setChat(result)
+  }
+
+  useEffect(() => {
+    fetchChatInfo(Number(route.id))
+  }, [])
+
   return (
-    <div className="w-full h-full flex-col flex">
-      <div className="px-4">
+    <div className="w-full h-full flex-col flex flex-1">
+      <div className="px-4 flex flex-col flex-1">
         <BackAppbar />
         <ReserveItem
-          title="역세권 숲 속의 아늑한 공간"
-          address="서울시 강남구 논현동"
-          startDate="2024.10.27"
-          endDate="2024.11.27"
-          isChecked={false}
+          id={chat?.chatId}
+          title={chat?.productTitle}
+          address={chat?.address}
+          startDate={chat?.startDate}
+          endDate={chat?.endDate}
+          isChecked={chat?.isUpdate}
+          status={chat?.status}
+          needCheck={chat?.isUpdate}
         />
-        <ChatRoom roomId={Number(route.id)} myId={2} />
-        <div className="h-16"></div>
+        <div
+          className="overflow-y-auto flex-1"
+          // style={{ height: 'calc(100% - 19.75rem )' }}
+        >
+          <ChatRoom roomId={Number(route.id)} myId={2} />
+        </div>
       </div>
-
       <ChatWriter roomId={Number(route.id)} myId={2} />
     </div>
   )

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   SOCIAL_LOGIN_TYPE,
   SocialLoginButton,
@@ -11,6 +11,7 @@ import { SocialLoginProps } from '@/app/utils/bridge'
 import { login } from '@/app/apis/guest/user'
 import { useCustomNavigate } from '@/app/navigator'
 import { LoginPageProvider, useLoginContext } from './provider'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 export default function Wrapper() {
   return (
@@ -37,6 +38,23 @@ function Login() {
     }
     window.bridge.postMessage(JSON.stringify(body))
   }
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    if (window.opener != null) {
+      window.opener.postMessage(
+        JSON.stringify({
+          token_version_id: searchParams.get('token_version_id'),
+          enc_data: searchParams.get('enc_data'),
+          integrity_value: searchParams.get('integrity_value'),
+        }),
+        window.location.origin
+      )
+      if (searchParams.get('token_version_id')) {
+        window.close()
+      }
+      // console.log('asdf')
+    }
+  }, [searchParams])
   // useNaverInit()
 
   return (

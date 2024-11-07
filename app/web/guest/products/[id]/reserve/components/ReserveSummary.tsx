@@ -1,20 +1,34 @@
-export default function ReserveSummary() {
+interface ReserveSummaryProps {
+  startDate: string | undefined
+  endDate: string | undefined
+}
+
+export default function ReserveSummary({
+  startDate,
+  endDate,
+}: ReserveSummaryProps) {
   return (
     <div className="flex flex-col">
-      <ChangeReserveOptions />
-      <ChangeReserveOptions />
+      <ChangeReserveOptions label="날짜" value={`${startDate} - ${endDate}`} />
+      <ChangeReserveOptions label="게스트" value="홍길동님" />
     </div>
   )
 }
 
-function ChangeReserveOptions() {
+function ChangeReserveOptions({
+  label,
+  value,
+}: {
+  label: string
+  value: string
+}) {
   return (
     <div className="h-8 pb-2.5 justify-between items-center inline-flex">
       <div className="text-black text-sm font-normal font-['Spoqa Han Sans Neo'] leading-tight">
-        날짜
+        {label}
       </div>
       <div className="text-black text-sm font-normal font-['Spoqa Han Sans Neo'] leading-tight">
-        10월 10일 - 11월 10일
+        {value}
       </div>
       <div className="text-black text-xs font-normal font-['Spoqa Han Sans Neo'] underline leading-none">
         수정

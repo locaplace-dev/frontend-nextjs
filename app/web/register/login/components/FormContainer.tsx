@@ -7,7 +7,7 @@ import { RegisterForm } from './RegisterForm'
 import { Button, BUTTON_TYPE } from '@/app/web/components/common/Button'
 import { CustomLink, useCustomNavigate } from '@/app/navigator'
 import { useRouter } from 'next/navigation'
-import { login, register } from '@/app/apis/guest/user'
+import { isEmailAvailable, login, register } from '@/app/apis/guest/user'
 import { LOGIN_ACTION_KIND, useLoginContext } from '../provider'
 
 export function FormContainer() {
@@ -16,15 +16,38 @@ export function FormContainer() {
   const navigator = useCustomNavigate()
   const onLogin = async () => {
     if (isLogin) {
-      await login({ username: email, password: password })
-      navigator.push('/web/guest/main/search')
+      const loginSucess = await login({ username: email, password: password })
+      console.log(loginSucess)
+      if (loginSucess) {
+        navigator.push('/web/guest/main/search')
+      } else {
+        dispatch({
+          type: LOGIN_ACTION_KIND.ERROR,
+          payload: {
+            name: 'passwordError',
+            value: '비밀번호를 확인해주세요.',
+          },
+        })
+      }
+
       // 로그인 과정 진행
     } else {
       // 회원가입 과정 진행
       // await register({ email: email, password: password })
       const jsonString = JSON.stringify({ email, password })
       const base64String = btoa(jsonString)
-      navigator.push(`/web/register/usage-agree?user=${base64String}`)
+      const emailAvailable = await isEmailAvailable(email)
+      if (emailAvailable) {
+        navigator.push(`/web/register/usage-agree?user=${base64String}`)
+      } else {
+        dispatch({
+          type: LOGIN_ACTION_KIND.ERROR,
+          payload: {
+            name: 'emailError',
+            value: '이메일이 중복되었습니다.',
+          },
+        })
+      }
     }
   }
 
@@ -48,22 +71,22 @@ export function FormContainer() {
           }}
         />
       </div>
-      <div
-        className="text-center pb-3"
-        onClick={() => {
-          dispatch({
-            type: LOGIN_ACTION_KIND.TOGGLE_LOGIN,
-            payload: {
-              value: '',
-              name: 'isLogin',
-            },
-          })
-        }}
-      >
+      <div className="text-center pb-3">
         <span className="text-black text-sm leading-tight">
           {isLogin ? ' 아직 회원이 아니세요?' : '이미 회원이세요?'}{' '}
         </span>
-        <span className="text-teal-400 text-sm font-mediumleading-tight">
+        <span
+          className="text-teal-400 text-sm font-mediumleading-tight"
+          onClick={() => {
+            dispatch({
+              type: LOGIN_ACTION_KIND.TOGGLE_LOGIN,
+              payload: {
+                value: '',
+                name: 'isLogin',
+              },
+            })
+          }}
+        >
           {isLogin ? '회원가입' : '로그인'}
         </span>
       </div>

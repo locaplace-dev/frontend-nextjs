@@ -18,12 +18,22 @@ import { useParams, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Products } from '@/app/apis/guest/type'
 import { getproductsDetails } from '@/app/apis/guest/products'
+import Divider from '@/app/web/components/common/Divider'
+import moment from 'moment'
+import { getBase64String } from '@/app/utils/base64Query'
 
 export default function ProductDetailPage() {
   const route = useParams()
   const navigator = useCustomNavigate()
 
   const [product, setProduct] = useState<Products | null>(null)
+  const [noMatterDate, setNoMatterDate] = useState<boolean>(false)
+  const [startDate, setStartDate] = useState<Date | undefined>()
+  const [endDate, setEndDate] = useState<Date | undefined>()
+  const changeDate = (e: any) => {
+    setStartDate(e[0])
+    setEndDate(e[1])
+  }
 
   useEffect(() => {
     getProductInfo()
@@ -32,7 +42,6 @@ export default function ProductDetailPage() {
   const getProductInfo = async () => {
     const body = await getproductsDetails(Number(route.id))
     setProduct(body)
-    console.log(body)
   }
 
   return (
@@ -54,17 +63,32 @@ export default function ProductDetailPage() {
         <ProductLocation />
         <ProductAddons />
         <ProductReviews />
-        <ProductCalendar />
+        <ProductCalendar
+          startDate={moment(startDate).format('MM.DD')}
+          endDate={moment(endDate).format('MM.DD')}
+          changeDate={changeDate}
+          setNoMatterDate={setNoMatterDate}
+          noMatterDate={noMatterDate}
+        />
         <ProductGuests />
         <ProductRefundRules />
 
-        <Button
-          onClick={() => {
-            navigator.push(`/web/guest/products/${route.id}/reserve`)
-          }}
-          buttonType={BUTTON_TYPE.primary}
-          label="예약하기"
-        />
+        <div className="py-5">
+          <Button
+            onClick={() => {
+              const param = getBase64String({
+                startDate,
+                endDate,
+                noMatterDate,
+              })
+              navigator.push(
+                `/web/guest/products/${route.id}/reserve?data=${param}`
+              )
+            }}
+            buttonType={BUTTON_TYPE.primary}
+            label="예약하기"
+          />
+        </div>
       </div>
     </div>
   )

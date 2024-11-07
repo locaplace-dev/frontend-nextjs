@@ -1,4 +1,17 @@
-export default function HostMessage() {
+import { Host } from '@/app/apis/guest/type'
+import TextField from '@/app/web/components/common/TextField'
+
+interface IHostMessage {
+  inquiry: string
+  setInquiry: Function
+  host: Host | undefined
+}
+
+export default function HostMessage({
+  inquiry,
+  setInquiry,
+  host,
+}: IHostMessage) {
   return (
     <div>
       <div className="h-14 px-4 pt-5 pb-3 justify-start items-center gap-2.5 inline-flex">
@@ -32,13 +45,20 @@ export default function HostMessage() {
         </div>
       </div>
       <div className=" w-full h-44 px-4 pt-3 pb-5 flex-col justify-start items-start gap-2.5 inline-flex">
-        <div className="self-stretch h-36 flex-col justify-start items-start gap-2.5 flex">
-          <div className="w-full h-36 p-5 rounded-xl border border-stone-300 flex-col justify-start items-start gap-0.5 flex">
-            <div className="self-stretch  text-sm font-normal  leading-tight">
-              여행에 관련한 문의사항을 입력해주세요.
-            </div>
-          </div>
-        </div>
+        <textarea
+          className="self-stretch h-36 flex-col justify-start items-start gap-2.5 flex rounded-xl border border-stone-300 px-3 py-2"
+          value={inquiry}
+          onChange={(e) => {
+            setInquiry(e.target.value)
+          }}
+          placeholder={`여행에 관련한 문의사항을 입력해주세요.`}
+          // text-stone-300
+          style={{
+            outline: 'none',
+            resize: 'none',
+            // height: 200,
+          }}
+        />
       </div>
     </div>
   )

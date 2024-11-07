@@ -30,14 +30,29 @@ const initReserveDetail: ReserveDetailItemProps[] = [
   },
 ]
 
-export default function ReserveDetailInfo() {
+export default function ReserveDetailInfo({
+  contractDate,
+  startDate,
+  endDate,
+}: {
+  contractDate: string
+  startDate: string
+  endDate: string
+}) {
   return (
     <div className="flex flex-col">
       <SubTitle subtitle="예약 상세정보" />
       <div className="flex inline-flex gap-2 flex-col">
-        {initReserveDetail.map((elem, idx) => (
-          <ReserveDetailItem key={`reserve-detail-item-${idx}`} {...elem} />
-        ))}
+        <ReserveDetailItem title="계약일" detail={contractDate} />
+        <ReserveDetailItem title="최초 입실일" detail={startDate} />
+        <ReserveDetailItem title="결제일" detail={contractDate} />
+        <ReserveDetailItem title="계약 종료일" detail={endDate} />
+        <ReserveDetailItem
+          title="확인서"
+          detail="확인서.pdf"
+          useAction={true}
+        />
+        <ReserveDetailItem title="계약서" detail="계약서.pdf" useAction />
       </div>
     </div>
   )

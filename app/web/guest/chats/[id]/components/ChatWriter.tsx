@@ -36,7 +36,7 @@ export default function ChatWriter({
   }
 
   return (
-    <div className="fixed bottom-0 left-0 w-full h-16 px-10 py-2.5 bg-white shadow justify-between items-center inline-flex">
+    <div className=" w-full h-16 px-10 py-2.5 bg-white shadow justify-between items-center inline-flex">
       <div className="w-full h-12 px-4 py-3 bg-stone-50 rounded-xl border border-stone-300 justify-between items-center flex">
         <input
           type="text"

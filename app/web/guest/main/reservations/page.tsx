@@ -1,45 +1,37 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ReservationTab from './components/reservationTab'
 
 import Suggestion from './components/SuggestLogin'
 import ReserveItem, {
   ReserveItemProps,
 } from '@/app/web/components/common/ReserveItem'
-
-const initReserveItemState = [
-  {
-    id: 1,
-    title: '역세권 숲속 공간',
-    address: '서울시 강남구 도산대로',
-    startDate: '2024.10.27',
-    endDate: '2024.12.27',
-    isChecked: true,
-  },
-  {
-    id: 2,
-    title: '역세권 숲속 공간',
-    address: '서울시 강남구 도산대로',
-    startDate: '2024.10.27',
-    endDate: '2024.12.27',
-    isChecked: false,
-  },
-]
+import {
+  getCancelledContract,
+  getPastContract,
+  getProgressContract,
+} from '@/app/apis/guest/contract'
+import { IContract } from '@/app/apis/guest/icontract'
 
 export default function Reservationpage() {
-  const [reserves, setReserves] =
-    useState<ReserveItemProps[]>(initReserveItemState)
+  const [reserves, setReserves] = useState<IContract[]>([])
 
-  const fetchReserves = (status: number) => {
+  const fetchReserves = async (status: number) => {
+    let result
     if (status == 1) {
-      setReserves(initReserveItemState)
+      result = await getProgressContract()
     } else if (status == 2) {
-      setReserves([initReserveItemState[0]])
+      result = await getPastContract()
     } else {
-      setReserves([])
+      result = await getCancelledContract()
     }
+    setReserves(result)
   }
+
+  useEffect(() => {
+    getProgressContract().then((val) => setReserves(val))
+  }, [])
 
   return (
     <div className="flex-1 flex flex-col">

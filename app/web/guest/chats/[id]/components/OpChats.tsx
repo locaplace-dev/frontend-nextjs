@@ -1,8 +1,9 @@
+import Image from 'next/image'
 import { ChatsItemProps } from './ChatRoom'
 
 export default function OpChats({
   text,
-  // fileURL,
+  fileURL,
   isContinued,
   timestamp,
 }: ChatsItemProps) {
@@ -15,9 +16,18 @@ export default function OpChats({
       </div>
       <div className="basis-0 flex-col justify-start items-end gap-1.5 inline-flex">
         <div className="p-3 bg-zinc-100 rounded-xl flex-col justify-start items-start flex">
-          <div className="text-black text-xs font-normal font-['Spoqa Han Sans Neo'] leading-none">
-            {text}
-          </div>
+          {fileURL ? (
+            <Image
+              src={fileURL}
+              alt={'chat-' + timestamp}
+              width={200}
+              height={200}
+            />
+          ) : (
+            <div className="text-black text-xs font-normal font-['Spoqa Han Sans Neo'] leading-none">
+              {text}
+            </div>
+          )}
         </div>
         {!isContinued && (
           <div className="h-4 text-right text-neutral-400 text-xs font-normal font-['Montserrat'] leading-none">
